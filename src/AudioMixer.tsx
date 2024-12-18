@@ -420,7 +420,7 @@ const AudioMixer = () => {
         if (store.get(isPlayingAtom)) {
             const cursorTime = (playbackStart + audioContext.currentTime);
             setCursorTime(cursorTime);
-            if (scrollX + innerWidth - cursorTime * timeResolution < 150) {
+            if (mainRef.current.scrollLeft + innerWidth - cursorTime * timeResolution < 100) {
               mainRef.current.scrollTo({ left: cursorTime * timeResolution - 50, behavior: "smooth" });
             }
             // stop animation
@@ -452,7 +452,7 @@ const AudioMixer = () => {
     return (
         <div>
             <h1>Web音声編集くん</h1>
-            <div style={{overflowX: "scroll", width: "100%"}} ref={mainRef} onDoubleClick={(e) => {
+            <div style={{overflowX: "scroll", width: "100%", position: "relative"}} ref={mainRef} onDoubleClick={(e) => {
                     if (isPlaying) {
                         pauseMix();
                     }
