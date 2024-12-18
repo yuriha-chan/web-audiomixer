@@ -362,7 +362,7 @@ const AudioTrack = (props) => {
                 <input
                     type="range"
                     min="-4"
-                    max="1"
+                    max="3"
                     step="0.01"
                     value={track.volume}
                     onChange={(e) => setTrack((prev) => ({ ...prev, volume: e.target.value }))}
