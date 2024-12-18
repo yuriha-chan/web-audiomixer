@@ -326,7 +326,7 @@ const AudioClip = (props) => {
    const isSelected = (selected === props.clip);
    return (
       <Draggable grid={[1, 120]} position={{x: clip.startTime * timeResolution, y: 0}} onStop={onDragStop(props.clip)}>
-         <div onClick={() => select(props.clip)} onTouchStart={() => selet(props.clip)}
+         <div onClick={() => select(props.clip)} onTouchStart={() => select(props.clip)}
              key={props.id}
              className={isSelected ? "selected clip" : "clip"}
              style={{
