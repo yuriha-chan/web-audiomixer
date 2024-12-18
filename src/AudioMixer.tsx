@@ -313,7 +313,7 @@ const AudioClip = (props) => {
    const isSelected = (selected === props.clip);
    return (
       <Draggable grid={[1, 120]} position={{x: clip.startTime * timeResolution, y: 0}} onStop={onDragStop(props.clip)}>
-         <div onClick={() => select(props.clip)} 
+         <div onClick={() => select(props.clip)} onTouchStart={() => selet(props.clip)}
              key={props.id}
              className={isSelected ? "selected clip" : "clip"}
              style={{
@@ -456,7 +456,7 @@ const AudioMixer = () => {
                     if (isPlaying) {
                         pauseMix();
                     }
-                    setCursorTime(e.pageX / timeResolution);}}>
+                    setCursorTime((mainRef.current.scrollLeft + e.pageX) / timeResolution);}}>
 
                 {/* Track List */}
                 <div className="track-container" style={{width: `${mixerLength * timeResolution}px`}}>
