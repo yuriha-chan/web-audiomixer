@@ -22,7 +22,7 @@ const decodeAudioFile = async (files) => {
         const reader = new FileReader();
         reader.onload = async () => {
           const audioBuffer = await audioContext.decodeAudioData(reader.result);
-          resolve({ file: audioFile, buffer: audioBuffer, duration: audioBuffer.duration, waveformImage: generateWaveformImage(audioBuffer, 100) });
+          resolve({ file: audioFile, buffer: audioBuffer, duration: audioBuffer.duration, waveformImage: generateWaveformImage(audioBuffer, 80) });
         };
         reader.readAsArrayBuffer(audioFile);
       }));
@@ -56,6 +56,19 @@ const generateWaveformImage = (audioBuffer, height = 100) => {
     imageData[i] = 0;
   }
 
+  let max = 0;
+  for (let x = 0; x < width; x++) {
+    let sum = 0;
+    for (let i = 0; i < step; i++) {
+      const s = channelData[x * step + i];
+      sum += s*s;
+    }
+      if (max < sum / step) {
+          max = sum / step;
+      }
+  }
+  const peak = Math.sqrt(max);
+
   // draw bars
   for (let x = 0; x < width; x++) {
     let sum = 0;
@@ -65,7 +78,7 @@ const generateWaveformImage = (audioBuffer, height = 100) => {
     }
     // root mean square amplitude
     const avg = Math.sqrt(sum / step);
-    const barHeight = 2 * Math.floor(avg * height);
+    const barHeight = 2 * Math.floor(0.5 * avg * height / peak);
     const centerY = Math.floor(height / 2);
 
     for (let y = centerY - barHeight / 2; y < centerY + barHeight / 2; y++) {
@@ -85,7 +98,7 @@ const generateWaveformImage = (audioBuffer, height = 100) => {
       sum += s*s;
     }
     const avg = Math.sqrt(sum / step);
-    const barHeight = 2 * Math.floor(avg * height);
+    const barHeight = 2 * Math.floor(0.5 * avg * height / peak);
     const centerY = Math.floor(height / 2);
 
     for (let y = centerY - barHeight / 2; y < centerY + barHeight / 2; y++) {
