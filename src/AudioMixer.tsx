@@ -377,7 +377,7 @@ const AudioMixer = () => {
     const mixerLength = useAtomValue(mixerLengthAtom);
     const [isCursorUpdated, setIsCursorUpdated] = useState(false); // Playback state
     const [cursorTime, setCursorTime] = useAtom(cursorTimeAtom);
-    const playbackRef = useRef(null); // For playback animation
+    const mainRef = useRef(null);
 
     // Add a new track
     const addTrack = () => {
@@ -411,7 +411,7 @@ const AudioMixer = () => {
         pauseMix();
       }
       setCursorTime(0);
-      scrollTo({ left: 0 });
+      mainRef.current.scrollTo({ left: 0 });
     }
 
     // Playback animation
@@ -421,7 +421,7 @@ const AudioMixer = () => {
             const cursorTime = (playbackStart + audioContext.currentTime);
             setCursorTime(cursorTime);
             if (scrollX + innerWidth - cursorTime * timeResolution < 150) {
-              scrollTo({ left: cursorTime * timeResolution - 50, behavior: "smooth" });
+              mainRef.current.scrollTo({ left: cursorTime * timeResolution - 50, behavior: "smooth" });
             }
             // stop animation
             setIsCursorUpdated(true);
@@ -452,7 +452,7 @@ const AudioMixer = () => {
     return (
         <div>
             <h1>Web音声編集くん</h1>
-            <div onDoubleClick={(e) => {
+            <div style={{overflowX: "scroll", width: "100%"}} ref={mainRef} onDoubleClick={(e) => {
                     if (isPlaying) {
                         pauseMix();
                     }
